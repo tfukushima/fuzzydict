@@ -32,7 +32,7 @@ class FuzzyDict(dict):
 
     def _get_fuzzy_elements(self, key):
         key_length = len(key)
-        if self.has_key(key):
+        if key in self:
             yield key, self[key]
         chars = int(key_length * self.threshold)
         keys = [x for x in self.keys() if len(x) == key_length and x != key]
@@ -41,7 +41,7 @@ class FuzzyDict(dict):
             for i in range(0, key_length):
                 if key[i] == k[i]:
                     match += 1
-            if chars <= match and self.has_key(k):
+            if chars <= match and k in self:
                 yield k, self[k]
         raise StopIteration()
 
