@@ -1,6 +1,8 @@
 fuzzydict, an ambiguous dictionary
 ==================================
 
+.. image:: https://travis-ci.org/tfukushima/fuzzydict.png?branch=v0.0.1-cleanup   :target: https://travis-ci.org/tfukushima/fuzzydict
+
 Installation
 -------------
 
