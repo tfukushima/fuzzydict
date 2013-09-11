@@ -46,4 +46,4 @@ Test
 License
 -------
 
-This package is released unser `MIT Lisense <http://www.opensource.org/licenses/mit-license.php>`_.
+This package is released under `MIT Lisense <http://www.opensource.org/licenses/mit-license.php>`_.
