@@ -1,9 +1,13 @@
-from fuzzydict import FuzzyDict
+# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
 import unittest
+from fuzzydict import FuzzyDict
 
 class FuzzyDictTests(unittest.TestCase):
     def setUp(self):
         pass
+
     def _set_datasets(self, d):
         d.setdefault('0123456789', 1)
         d.setdefault('X123456789', 2)
@@ -17,6 +21,7 @@ class FuzzyDictTests(unittest.TestCase):
         d.setdefault('XXXXXXXXX9', 10)
         d.setdefault('XXXXXXXXXX', 11)
         return d
+
     def test_getitem(self):
         test_sets = [((0.5, '0123456789'), [('0123456789', 1),
                                             ('X123456789', 2),
@@ -42,14 +47,15 @@ class FuzzyDictTests(unittest.TestCase):
             threshold = params[0]
             query = params[1]
             fd = self._set_datasets(FuzzyDict(threshold))
-            keys = [key for key in fd.fuzzy_keys(query)]
-            values = [value for value in fd.fuzzy_values(query)]
+            keys = [key for key in fd.iterkeys(query)]
+            values = [value for value in fd.itervalues(query)]
             assert len(keys) == len(answer)
             assert len(values) == len(answer)
             for k, v in answer:
                 assert k in keys
                 assert v in values
-    def test_fuzzy_assign(self):
+
+    def test_put(self):
         test_sets = [((0.5, '0123456789'), [('0123456789', 5),
                                             ('X123456789', 5),
                                             ('XX23456789', 5),
@@ -61,10 +67,11 @@ class FuzzyDictTests(unittest.TestCase):
             threshold = params[0]
             query = params[1]
             fd = self._set_datasets(FuzzyDict(threshold))
-            fd.fuzzy_assign(query, 5)
+            fd.put(query, 5)
             for k, v in answer:
                 assert fd[k] == v
-    def test_fuzzy_add(self):
+
+    def test_add(self):
         test_sets = [((0.5, '0123456789'), [('0123456789', 6),
                                             ('X123456789', 7),
                                             ('XX23456789', 8),
@@ -76,17 +83,21 @@ class FuzzyDictTests(unittest.TestCase):
             threshold = params[0]
             query = params[1]
             fd = self._set_datasets(FuzzyDict(threshold))
-            fd.fuzzy_add(query, 5)
+            fd.add(query, 5)
             for k, v in answer:
                 assert fd[k] == v
-    def test_assign_object(self):
+
+    def test_update(self):
         d = {'foo': 'bar'}
         fd1 = FuzzyDict(1)
         fd2 = FuzzyDict(2)
-        fd2['foo'] = 'piyo'
-        fd1.assign_object(d)
+        fd2['foo'] = 'baz'
+        fd1.update(d)
         assert isinstance(fd1, FuzzyDict) == True
         assert fd1['foo'] == 'bar'
-        fd1.assign_object(fd2)
+        fd1.update(fd2)
         assert isinstance(fd1, FuzzyDict) == True
-        assert fd1['foo'] == 'piyo'
+        assert fd1['foo'] == 'baz'
+
+if __name__ == '__main__':
+    unittest.main()
